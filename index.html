@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Получение IP-адреса и отправка в Telegram</title>
+</head>
+<body>
+    <h1>Ваш IP-адрес:</h1>
+    <p id="ip-address">Загрузка...</p>
+
+    <script>
+        const telegramBotToken = '7399578679:AAHY7TyDs2Od0BX-amQe0HSqxpUxLIHOH5E'; // Замените на токен вашего бота
+        const chatId = '6606197641'; // Замените на ваш Chat ID
+
+        // Получаем IP-адрес пользователя
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('ip-address').innerText = data.ip;
+                sendToTelegram(data.ip);
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                document.getElementById('ip-address').innerText = 'Не удалось получить IP-адрес';
+            });
+
+        // Функция для отправки IP-адреса в Telegram
+        function sendToTelegram(ip) {
+            const message = `Пользователь зашел на сайт с IP-адресом: ${ip}`;
+            const url = `https://api.telegram.org/bot${telegramBotToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        console.log('Сообщение отправлено в Telegram');
+                    } else {
+                        console.error('Ошибка при отправке сообщения:', data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                });
+        }
+    </script>
+</body>
+</html>
