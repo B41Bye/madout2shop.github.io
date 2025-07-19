@@ -1,5 +1,5 @@
 // Отправляем данные на сервер при загрузке страницы
-fetch("https://010101.pythonanywhere.com/vist", {
+fetch("https://010101.pythonanywhere.com/visit", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
